@@ -31,7 +31,7 @@ const createIframe = (embed) => {
   const spaceId  = embed.slice(0, 5);
   const videoId = embed.slice(5, embed.length);
 
-  return CKEDITOR.dom.element.createFromHtml(`<iframe src="https://space-${spaceId}.video-dns.com/${videoId}/player.html" style="width: 100%; aspect-ratio: 16/9;" frameborder="0" allow="fullscreen"></iframe>`);
+  return CKEDITOR.dom.element.createFromHtml(`<iframe src="https://space-${spaceId}.video-dns.com/${videoId}/player.html" sandbox="allow-scripts" style="width: 100%; aspect-ratio: 16/9;" frameborder="0" allow="fullscreen"></iframe>`);
 }
 
 CKEDITOR.dialog.add("maveDialog", function (editor) {
@@ -50,7 +50,7 @@ CKEDITOR.dialog.add("maveDialog", function (editor) {
             type: "html",
             html: `
             <div style="display: relative; width: 100%; aspect-ratio: 16/9; margin-top: -1px; border-radius: 3px; overflow: hidden;">
-              <mave-upload token="${MAVE_CONFIG.token}" style="display: relative;"></mave-upload>
+              <mave-upload token="${MAVE_CONFIG.token}" locale="${MAVE_CONFIG.locale}" color="${MAVE_CONFIG.color}" font="${MAVE_CONFIG.font}" radius="${MAVE_CONFIG.radius}" style="display: relative;"></mave-upload>
             </div>
             `,
             onShow: function(e) {
@@ -68,10 +68,13 @@ CKEDITOR.dialog.add("maveDialog", function (editor) {
           {
             type: "html",
             html: `
-            <div style="display: relative; width: 100%; aspect-ratio: 16/9; margin-top: -1px; border-radius: 3px; overflow: hidden;">
+            <div style="display: relative; width: 100%; aspect-ratio: 16/9; margin-top: -1px; border-radius: 3px; overflow-y: scroll;">
               <mave-list token="${MAVE_CONFIG.token}" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 9px; width: 100%;">
                 <template>
-                  <mave-img onclick="handleClick(event)" style="width: 154px; height: 86px; border-radius: 3px; overflow: hidden; cursor: pointer;"></mave-img>
+                  <div style="position: relative; width: 154px; height: 86px; overflow: hidden;">
+                    <mave-img onclick="handleClick(event)" style="width: 154px; height: 86px; border-radius: 3px; overflow: hidden; cursor: pointer;"></mave-img>
+                    <div style="position: absolute; bottom: 4px; left: 4px; color: white; font-size: 11px; font-weight: 500; padding: 3px; background-color: rgba(0,0,0,0.3); height: 13px; width: 144px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; pointer-events: none;" slot="item-title"></div>
+                  </div>
                 </template>
               </mave-list>
             </div>
