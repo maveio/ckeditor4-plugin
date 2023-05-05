@@ -10,7 +10,11 @@ Copy the contents from [`plugins/mave`](https://github.com/maveio/ckeditor4-plug
   import { Player, Upload } from "https://cdn.mave.io/components@0.0.0/index.js";
 
   window.MAVE_CONFIG = {
-    token: 'YOUR_TOKEN_HERE', // token (JWT): should include `sub`, `collection` and `exp` (in production)
+    token: '{{your token here}}', // token (JWT): should include `sub` (space), `collection` and `exp`,
+    color: 'red',
+    font: 'Verdana, system-ui, sans-serif',
+    radius: '20px',
+    locale: 'nl' // default: 'en', can be: 'nl', 'de', 'fr'
   }
 </script>
 ```
