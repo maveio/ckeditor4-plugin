@@ -25,6 +25,8 @@ const handleCompleted = (e) => {
   const iframe = createIframe(embed);
   Object.values(CKEDITOR.instances)[0].insertElement(iframe);
   CKEDITOR.dialog.getCurrent().hide();
+  
+  e.target.reset();
 }
 
 const createIframe = (embed) => {
@@ -50,7 +52,7 @@ CKEDITOR.dialog.add("maveDialog", function (editor) {
             type: "html",
             html: `
             <div style="display: relative; width: 100%; aspect-ratio: 16/9; margin-top: -1px; border-radius: 3px; overflow: hidden;">
-              <mave-upload token="${MAVE_CONFIG.token}" locale="${MAVE_CONFIG.locale}" color="${MAVE_CONFIG.color}" font="${MAVE_CONFIG.font}" radius="${MAVE_CONFIG.radius}" style="display: relative;"></mave-upload>
+              <mave-upload token="${MAVE_CONFIG.token}" locale="${MAVE_CONFIG.locale}" color="${MAVE_CONFIG.color}" font="${MAVE_CONFIG.font}" radius="${MAVE_CONFIG.radius}"></mave-upload>
             </div>
             `,
             onShow: function(e) {
