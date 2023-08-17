@@ -6,14 +6,15 @@
     <script src="js/ckeditor.js"></script>
     <script src="js/sample.js"></script>
     <script type="module">
-      import { Player, Upload } from "https://cdn.mave.io/components@0.0.0/index.js";
+      import { Player, Upload } from "https://cdn.mave.io/npm/@maveio/components/+esm";
 
       window.MAVE_CONFIG = {
         token: '{{your token here}}', // token (JWT): should include `sub` (space), `collection` and `exp`,
         color: 'red',
         font: 'Verdana, system-ui, sans-serif',
         radius: '20px',
-        locale: 'nl' // default: 'en', can be: 'nl', 'de', 'fr'
+        locale: 'nl', // default: 'en', can be: 'nl', 'de', 'fr']
+        previewInlineTag: 'img' // optional, defaults to iframe
       }
     </script>
     <link rel="stylesheet" href="css/samples.css" />

@@ -15,25 +15,29 @@ CKEDITOR.plugins.add("mave", {
 const handleClick = (e) => {
   const embed = e.target.getAttribute('embed');
   if(embed.length != 15) return;
-  const iframe = createIframe(embed);
+  const iframe = createPreview(embed);
   Object.values(CKEDITOR.instances)[0].insertElement(iframe);
   CKEDITOR.dialog.getCurrent().hide();
 }
 
 const handleCompleted = (e) => {
   const embed = e.detail.embed;
-  const iframe = createIframe(embed);
+  const iframe = createPreview(embed);
   Object.values(CKEDITOR.instances)[0].insertElement(iframe);
   CKEDITOR.dialog.getCurrent().hide();
   
   e.target.reset();
 }
 
-const createIframe = (embed) => {
+const createPreview = (embed) => {
   const spaceId  = embed.slice(0, 5);
   const videoId = embed.slice(5, embed.length);
 
-  return CKEDITOR.dom.element.createFromHtml(`<iframe src="https://space-${spaceId}.video-dns.com/${videoId}/player.html" sandbox="allow-scripts" style="width: 100%; aspect-ratio: 16/9;" frameborder="0" allow="fullscreen"></iframe>`);
+  if(MAVE_CONFIG.previewInlineTag == 'img') {
+    return CKEDITOR.dom.element.createFromHtml(`<img src="https://space-${spaceId}.video-dns.com/${videoId}/placeholder.webp"></img>`);
+  } else {
+    return CKEDITOR.dom.element.createFromHtml(`<iframe src="https://space-${spaceId}.video-dns.com/${videoId}/player.html" sandbox="allow-scripts" style="width: 100%; aspect-ratio: 16/9;" frameborder="0" allow="fullscreen"></iframe>`);
+  }  
 }
 
 CKEDITOR.dialog.add("maveDialog", function (editor) {
