@@ -7,7 +7,7 @@ Copy the contents from [`plugins/mave`](https://github.com/maveio/ckeditor4-plug
 
 ```html
 <script type="module">
-  import { Player, Upload } from "https://cdn.mave.io/components@0.0.0/index.js";
+  import { Player, Upload } from "https://cdn.mave.io/npm/@maveio/components/+esm";
 
   window.MAVE_CONFIG = {
     token: '{{your token here}}', // token (JWT): should include `sub` (space), `collection` and `exp`,
@@ -26,4 +26,4 @@ Replace the `YOUR_TOKEN_HERE` from the above code snippet by generating your own
 
 
 ## 4. Server configuration (optional when using previewInlineTag 'img')
-When you are using an image placeholder, you will need to transform the image tag to an `<mave-player>` element when rendering on page. You can find the elements as `img[data-type="mave_preview"]`. Within each `img` tag you will find `img[data-type="embed"]`, which is the value use to render the player as `<mave-player embed="{embed}"></mave-player>`.
+When you are using an image placeholder (see `MAVE_CONFIG.previewInlineTag`), you will need to transform the image tag to an `<mave-player>` element when rendering on page. You can find the elements as `img[data-type="mave_preview"]`. Within each `img` tag you will find `img[data-type="embed"]`, which is the value use to render the player as `<mave-player embed="{embed}"></mave-player>`.
