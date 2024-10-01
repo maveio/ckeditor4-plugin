@@ -39,9 +39,6 @@ const handleCompleted = (e) => {
   Object.values(CKEDITOR.instances)[0].insertElement(iframe);
   CKEDITOR.dialog.getCurrent().hide();
   e.target.reset();
-  list.refresh().then(() => {
-    checkIfListIsEmpty();
-  });
 }
 
 const handleDelete = async (e) => {
