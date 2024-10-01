@@ -35,10 +35,13 @@ const handleClick = (e) => {
 const handleCompleted = (e) => {
   const embed = e.detail.embed;
   const iframe = createPreview(embed);
+
   Object.values(CKEDITOR.instances)[0].insertElement(iframe);
   CKEDITOR.dialog.getCurrent().hide();
   e.target.reset();
-  checkIfListIsEmpty();
+  list.refresh().then(() => {
+    checkIfListIsEmpty();
+  });
 }
 
 const handleDelete = async (e) => {
@@ -82,6 +85,7 @@ const checkIfListIsEmpty = () => {
 
   if (maveList && maveList.shadowRoot) {
     const maveImgs = maveList.shadowRoot.querySelectorAll('mave-img');
+
     if (maveImgs.length === 0) {
       emptyState.style.display = 'flex';
     } else {
@@ -216,6 +220,16 @@ CKEDITOR.dialog.add("maveDialog", function (editor) {
     ],
     onShow: function () {
       observeMaveListChanges();
+    },
+    onLoad: function() {
+      this.on('selectPage', function(e) {
+        if (e.data.page === 'gallery') {
+          const list = this.getElement().$.querySelector('mave-list');
+          list.refresh().then(() => {
+            checkIfListIsEmpty();
+          });
+        }
+      });
     }
   };
 });
