@@ -26,19 +26,26 @@ let currentLocale = 'en'; // Default locale
 const handleClick = (e) => {
   const embed = e.target.getAttribute('embed');
   if (embed.length != 15) return;
-  const iframe = createPreview(embed);
+  const iframe = createPreviewHTML(embed);
   Object.values(CKEDITOR.instances)[0].insertElement(iframe);
   CKEDITOR.dialog.getCurrent().hide();
   checkIfListIsEmpty();
 }
 
-const handleCompleted = (e) => {
-  const embed = e.detail.embed;
-  const iframe = createPreview(embed);
+let embed;
 
-  Object.values(CKEDITOR.instances)[0].insertElement(iframe);
-  CKEDITOR.dialog.getCurrent().hide();
-  e.target.reset();
+const handleCompletedUpload = (e) => {
+  embed = e.detail.embed;
+
+  if(MAVE_CONFIG.previewInlineTag != 'img') {
+    insertPreview();
+  }
+}
+
+const handleIncomingRendition = (e) => {
+  if(MAVE_CONFIG.previewInlineTag == 'img' && e.detail.type == 'placeholder' && e.detail.container == 'webp') {
+    insertPreview();
+  }
 }
 
 const handleDelete = async (e) => {
@@ -63,12 +70,21 @@ const handleDelete = async (e) => {
   }
 }
 
-const createPreview = (embed) => {
+const insertPreview = () => {
+  const iframe = createPreviewHTML(embed);
+
+  Object.values(CKEDITOR.instances)[0].insertElement(iframe);
+  CKEDITOR.dialog.getCurrent().hide();
+  e.target.reset();
+}
+
+
+const createPreviewHTML = (embed) => {
   const spaceId = embed.slice(0, 5);
   const videoId = embed.slice(5, embed.length);
 
   if (MAVE_CONFIG.previewInlineTag == 'img') {
-    return CKEDITOR.dom.element.createFromHtml(`<img data-type="mave_preview" data-embed="${embed}" src="https://space-${spaceId}.video-dns.com/${videoId}/placeholder.webp"></img>`);
+    return CKEDITOR.dom.element.createFromHtml(`<img data-type="mave_preview" data-embed="${embed}" src="https://space-${spaceId}.video-dns.com/${videoId}/placeholder.webp" style="width: 100%;"></img>`);
   } else {
     return CKEDITOR.dom.element.createFromHtml(`<iframe data-type="mave_preview" data-embed="${embed}" src="https://space-${spaceId}.video-dns.com/${videoId}/player.html" sandbox="allow-scripts" style="width: 100%; aspect-ratio: 16/9;" frameborder="0" allow="fullscreen"></iframe>`);
   }
@@ -125,6 +141,7 @@ CKEDITOR.dialog.add("maveDialog", function (editor) {
             html: `
             <div style="display: relative; width: 100%; aspect-ratio: 16/9; margin-top: -1px; border-radius: 3px; overflow: hidden;">
               <mave-upload 
+                disableCompletion="true"
                 token="${MAVE_CONFIG.token}" 
                 locale="${MAVE_CONFIG.locale}" 
                 color="${MAVE_CONFIG.color}" 
@@ -142,7 +159,8 @@ CKEDITOR.dialog.add("maveDialog", function (editor) {
             `,
             onShow: function (e) {
               const upload = this.getElement().$.querySelector('mave-upload');
-              upload.addEventListener('completed', handleCompleted);
+              upload.addEventListener('completed', handleCompletedUpload);
+              upload.addEventListener('rendition', handleIncomingRendition);
             }
           },
         ],
