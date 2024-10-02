@@ -38,13 +38,13 @@ const handleCompletedUpload = (e) => {
   embed = e.detail.embed;
 
   if(MAVE_CONFIG.previewInlineTag != 'img') {
-    insertPreview();
+    insertPreview(e);
   }
 }
 
 const handleIncomingRendition = (e) => {
   if(MAVE_CONFIG.previewInlineTag == 'img' && e.detail.type == 'placeholder' && e.detail.container == 'webp') {
-    insertPreview();
+    insertPreview(e);
   }
 }
 
