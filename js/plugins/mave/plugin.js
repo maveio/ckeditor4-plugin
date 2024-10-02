@@ -38,13 +38,13 @@ const handleCompletedUpload = (e) => {
   embed = e.detail.embed;
 
   if(MAVE_CONFIG.previewInlineTag != 'img') {
-    insertPreview(e);
+    insertPreview();
   }
 }
 
 const handleIncomingRendition = (e) => {
   if(MAVE_CONFIG.previewInlineTag == 'img' && e.detail.type == 'placeholder' && e.detail.container == 'webp') {
-    insertPreview(e);
+    insertPreview();
   }
 }
 
@@ -75,7 +75,7 @@ const insertPreview = () => {
 
   Object.values(CKEDITOR.instances)[0].insertElement(iframe);
   CKEDITOR.dialog.getCurrent().hide();
-  e.target.reset();
+  document.querySelector('mave-upload').reset();
 }
 
 
